@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ApplicationTest {
-
+    // 아래 테스트는 end to end test
+    // ** 도메인 비즈니스 로직 테스트를 수행하는 것이 중요하다. 단위테스트, 통합테스트
+    // ** -> 이번에는 단위테스트 중심으로 book,repo,service 객체간의 상호작용 테스트
     @Test
     @DisplayName("애플리케이션 생성 테스트")
     void create() {

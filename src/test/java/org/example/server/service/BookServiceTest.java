@@ -10,12 +10,13 @@ import org.junit.jupiter.api.*;
 class BookServiceTest {
     static InMemoryRepository repository;
     static BookService service;
-
+    // ** Repository / 단위테스트, 서비스 테스트에 집중하고 싶을 때 임의의 Repository(<-대역).findAll()
+    // ** 테스트 방법론: 테스트를 대체할 수 잇는 테스트 더블(임의의 대역) mock,spy,stub
     @BeforeAll
     @DisplayName("테스트 레포지토리로 각 상태에 있는 책 저장")
     static void beforeAll() {
-        System.out.println("@BeforeAll");
-        repository = new InMemoryRepository();
+        System.out.println("@BeforeAll"); // ** 없어도 된다
+        repository = new InMemoryRepository(); 
         service = new BookService(repository);
         repository.create(new Book("테스트책1", "이세희", 100)); // id = 1
         repository.create(new Book("테스트책2", "이세희", 100)); // id = 2
@@ -35,7 +36,7 @@ class BookServiceTest {
 
     /* 도서 전채 조회 테스트 */
     @Test
-    @DisplayName("없는 문자열 가진 책 검색")
+    @DisplayName("없는 문자열 가진 책 검색") // ** 
     void readAllIfAllNotExist() {
         Assertions.assertThrows(ServerException.class, () -> {
             service.searchByName("없는 이름");

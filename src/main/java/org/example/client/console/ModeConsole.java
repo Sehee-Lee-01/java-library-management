@@ -12,17 +12,13 @@ import java.util.stream.Stream;
     scanType() 메서드에서 파라미터 값으로 IO 정보를 전하게 되었습니다.
     아래와 같은 경우에 enum을 적극활용하는 것이 좋을지, 더 좋은 방법이 있을지 궁금합니다!
     MethodConsole 클래스도 구조가 ModeConsole와 동일 합니다. */
-
-// "모드"만 아는 클래스
-// io를 전달 받아 사용자로부터 모드를 입력 받고 enum과 매핑
-// 매핑 후 사용자가 선택한 모드 타입을 반환하는 역할
 public class ModeConsole {
-    public enum ModeType {
+    public enum ModeType { //** 분리, 네이밍
         COMMON(1, "1. 일반 모드", "\n[System] 일반 모드로 애플리케이션을 실행합니다.\n"),
         TEST(2, "2. 테스트 모드", "\n[System] 테스트 모드로 애플리케이션을 실행합니다.\n");
-
+        // ** system.linesperator
         private static final Map<Integer, ModeType> BY_NUMBER =
-                Stream.of(values()).collect(Collectors.toMap(ModeType::getNum, Function.identity()));
+                Stream.of(values()).collect(Collectors.toMap(ModeType::getNum, Function.identity())); //** list 조회 -> 가독성 vs 성능
 
         public static ModeType valueOfNumber(int num) {
             return BY_NUMBER.get(num);
@@ -30,7 +26,7 @@ public class ModeConsole {
 
         public static final String MODE_CONSOLE = "\nQ. 모드를 선택해주세요.\n"
                 + String.join("", Stream.of(values()).map(type -> type.name + "\n").toArray(String[]::new)) + "\n> ";
-
+        // ** 변수명
         private final int num;
         private final String name;
         public final String alert;
@@ -51,7 +47,7 @@ public class ModeConsole {
 
     public static String scanType(IO io) {
         io.print(ModeType.MODE_CONSOLE);
-        int selectNum = Validator.validateSelectNum(ModeType.values().length, io.scanLine()); //숫자 & 범위 체크
+        int selectNum = Validator.validateSelectNum(ModeType.values().length, io.scanLine());
         ModeType modeType = ModeType.valueOfNumber(selectNum);
         io.println(modeType.alert);
         return modeType.name();

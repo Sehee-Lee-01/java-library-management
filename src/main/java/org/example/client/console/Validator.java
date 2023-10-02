@@ -4,17 +4,16 @@ import org.example.packet.RequestData;
 
 import java.util.regex.Pattern;
 
-// 값의 유효성을 체크하고 유효하지 않으면 예외를 던지는 역할
-// 통과하면 이 메서드를 사용하는 입장에서 간결해보이기 위해 다시 그대로 검사한 데이터를 내보낸다.
-// int는 제외) String으로 받고 int로 내보낸다.
 public class Validator {
-    protected static RequestData validateBook(String[] input) {
+    protected static RequestData validateBook(String[] input) { // ** 현재는 정확히 맞는 정보가 들어와야한다. 객체화시키면?
         String name = validateNameAndAuthor(input[0]);
         String author = validateNameAndAuthor(input[1]);
         int pages = validateIdAndPages(input[2]);
         return new RequestData(name, author, pages);
     }
 
+    // + 정규식 길이, {0, 100}, 라인세퍼레이터
+    // ** 한글 포함
     protected static String validateNameAndAuthor(String input) {
         if (Pattern.matches("[a-zA-Z0-9]*$", input) && !input.isEmpty() && input.length() < 100) {
             return input;

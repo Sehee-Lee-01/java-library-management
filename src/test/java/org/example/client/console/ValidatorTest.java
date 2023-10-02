@@ -6,11 +6,12 @@ import org.junit.jupiter.api.Test;
 
 class ValidatorTest {
     /* 문자 입력 유효성 테스트 */
+    
     @Test
     @DisplayName("문자열 유효성 검증: 특수 문자 예외")
     void validateNameAndAuthorSpecial() {
         Assertions.assertThrows(ValidateException.class, () -> {
-            Validator.validateNameAndAuthor("%");
+            Validator.validateNameAndAuthor("ㅁ");
         });
     }
 
@@ -45,7 +46,7 @@ class ValidatorTest {
     @Test
     void validateIdAndPagesSpecial() {
         Assertions.assertThrows(ValidateException.class, () -> {
-            Validator.validateIdAndPages("a");
+            Validator.validateIdAndPages("ㅁ");
         });
     }
 

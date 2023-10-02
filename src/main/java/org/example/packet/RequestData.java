@@ -1,6 +1,7 @@
 package org.example.packet;
 
-public class RequestData {
+public class RequestData { //** 논리적인 결합, 분리,
+    // ** 컴파일 에러에서 잡히지 않아서(생성자) ex) 등록용 리퀘스트
     public int id; // 5000 미만
     public String name; // 100자 미만
     public String author; // 100자 미만
@@ -11,15 +12,15 @@ public class RequestData {
 
     public RequestData(int id) {
         this.id = id;
-    } // 그 외
+    }
 
     public RequestData(String name) {
         this.name = name;
-    } // 이름 검색
+    }
 
     public RequestData(String name, String author, int pages) {
         this.name = name;
         this.author = author;
         this.pages = pages;
-    } // 책 등록용 생성자
+    }
 }

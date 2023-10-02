@@ -7,11 +7,11 @@ import org.example.server.exception.EmptyLibraryException;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
-// 서버의 테스트 모드 레포지토리를 담당하는 부분
 public class InMemoryRepository implements Repository {
     public int newId = 1; //  생성 예정인 id 값, 1부터 생성
-    public final LinkedHashMap<Integer, Book> data = new LinkedHashMap<>(); // 저장한 순서대로 저장
+    public final LinkedHashMap<Integer, Book> data = new LinkedHashMap<>();
 
+    // + 멀티 스레드 상황이라면? atomic 시리즈, 동시성 문제, concurrent hashmap
     @Override
     public void create(Book book) {
         int bookId = newId++;
@@ -21,12 +21,12 @@ public class InMemoryRepository implements Repository {
 
     @Override
     public String readAll() {
-        if (data.isEmpty())
+        if (data.isEmpty()) // ** emptylsit를 보내는것이 낫지않을까?
             throw new EmptyLibraryException();
         StringBuilder sb = new StringBuilder();
         data.values().forEach((book) -> {
             sb.append(checkLoadTime(book));
-        }); // 정리 완료 시간 체크 후 업데이트 후 append
+        });
         sb.append("\n");
         return sb.toString();
     }
@@ -36,12 +36,12 @@ public class InMemoryRepository implements Repository {
         StringBuilder sb = new StringBuilder();
         data.values().forEach(
                 book -> {
-                    checkLoadTime(book);
+                    checkLoadTime(book); // 
                     if (book.name.contains(bookName)) sb.append(book);
                 }
-        ); // 정리 완료 시간 체크 후 업데이트
+        );
         if (sb.isEmpty())
-            throw new EmptyLibraryException();
+            throw new EmptyLibraryException(); // + 네이밍
         sb.append("\n");
         return sb.toString();
     }
@@ -50,8 +50,8 @@ public class InMemoryRepository implements Repository {
     public Book getById(int bookId) {
         Optional<Book> book = Optional.ofNullable(data.get(bookId));
         if (book.isEmpty())
-            throw new BookNotFoundException();
-        return checkLoadTime(book.get()); // 정리 완료 시간 체크 후 업데이트
+            throw new BookNotFoundException(); // + 네이밍
+        return checkLoadTime(book.get());
     }
 
     @Override
@@ -60,7 +60,6 @@ public class InMemoryRepository implements Repository {
     }
 
     @Override
-    public void save() {
-    } // 어댑터 패턴 사용이 적절한 상황인 것 같아 적용하려했는데 여기에서는 save() 메서드를 사용하지 않는 문제점이 있습니다.
-    // Application 클래스에서 애플리케이션 자체 에러가 발생하면, 기존 데이터를 파일에 저장하고 종료시키기 위해서 이 메서드를 인터페이스에 추가했습니다.
+    public void save() { //** 제거
+    }
 }

@@ -13,28 +13,28 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-// 일반모드에서 사용할 파일을 불러오고, 업데이트 된 정보를 쓰는 역할을 담당
+// * java 구글 스타일 가이드
 public class FileStorage {
-    public int newId; //  생성 예정인 id 값, 1부터 생성, JSON에 저장되어 있다.
-    public final LinkedHashMap<Integer, Book> data; // 프로그램 실행 시에는 파일 변경은 없고 해당 Map 데이터가 변경
+    public int newId; //  생성 예정인 id 값, 1부터 생성, JSON에 저장되어 있다. ** id 값을 관리해야할까? 별도 클래스두거나 레포지토리에서 하기
+    public final LinkedHashMap<Integer, Book> data;
     private final File jsonFile;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public FileStorage() {
+    public FileStorage() {// + jsonFile을 생성자에서 받을 수 있 게 한다면? uitll 클래스: 파일 스토리지 여러개를 만드는 상황이라면?
         try {
             URI path = Paths.get("src", "main", "resources", "book.json").toUri();
             jsonFile = new File(path);
             Map<String, Object> jsonMap = objectMapper.readValue(jsonFile, Map.class);
             newId = (int) jsonMap.get("new_id");
             data = new LinkedHashMap<>();
-            if (newId != 1) {
+            if (newId != 1) { // *고민해보기
                 ArrayList<LinkedHashMap<String, Object>> dataObjects = (ArrayList<LinkedHashMap<String, Object>>) jsonMap.get("data");
-                putObjectsToBookData(dataObjects); // 데이커를 사용할 수 있도록 변경
+                putObjectsToBookData(dataObjects);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }// FileStorage는 생성하자마자 파일에서 데이터를 모두 읽어오고 가공한다.
+    }
 
     private void putObjectsToBookData(ArrayList<LinkedHashMap<String, Object>> objects) {
         objects.forEach(
@@ -50,10 +50,9 @@ public class FileStorage {
         );
     }
 
-    public void saveFile() {
+    public void saveFile() { // + 파라미터에 path
         Map<String, Object> jsonMap = new HashMap<>();
         if (data.isEmpty()) {
-            // 도서가 없는 경우에는 newid 1로 변경 후 저장.
             jsonMap.put("new_id", 1);
             jsonMap.put("data", new ArrayList<>());
         } else {
