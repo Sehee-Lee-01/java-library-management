@@ -1,24 +1,10 @@
 package org.example.client;
 
-import org.example.client.io.ConsoleIn;
-import org.example.client.io.In;
-
 import java.util.regex.Pattern;
 
 public class Validator {
-    private final In IN;
 
-    public Validator(In in) {
-        IN = in;
-    }
-
-    public Validator() {
-        IN = ConsoleIn.getInstance();
-    }
-
-    public String scanAndValidateString() {
-        String input = IN.scanLine().trim();
-
+    public String scanAndValidateNameAndAuthor(String input) {
         if (Pattern.matches("[a-zA-Z0-9ㄱ-ㅎ가-힣 ]{1,99}$", input)) {
             return input;
         }
@@ -30,9 +16,7 @@ public class Validator {
         };
     }
 
-    public int scanAndValidateNumber() {
-        String inputStr = IN.scanLine().trim();
-
+    public int scanAndValidateIdAndPageNumber(String inputStr) {
         if (Pattern.matches("^[0-9]{1,4}$", inputStr)) {
             int input = Integer.parseInt(inputStr);
             if (0 < input && input < 5000) {
@@ -47,9 +31,7 @@ public class Validator {
         };
     }
 
-    public int scanAndValidateSelection(int selectCount) {
-        String inputStr = IN.scanLine().trim();
-
+    public int scanAndValidateSelectionNumber(int selectCount, String inputStr) {
         if (Pattern.matches("[1-9]", inputStr)) {
             int input = Integer.parseInt(inputStr);
             if (input <= selectCount) {
